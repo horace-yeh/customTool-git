@@ -1,0 +1,18 @@
+﻿################################################################################
+# 這個 .gitignore 檔案由 Microsoft(R) Visual Studio 自動建立。
+################################################################################
+
+/APIHelper/bin
+/APIHelper/obj
+/CustomHelper/bin
+/CustomHelper/obj
+/DBHelper/bin
+/DBHelper/obj
+/ExcelHelper/bin
+/ExcelHelper/obj
+/SendMailHelper/bin
+/SendMailHelper/obj
+/TestConsole/bin
+/TestConsole/obj
+/packages
+/.vs
