@@ -79,7 +79,9 @@ namespace SendMailHelper
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                //例外錯誤外拋
+                throw;
+                //ex.ToString();
             }
         }
 
