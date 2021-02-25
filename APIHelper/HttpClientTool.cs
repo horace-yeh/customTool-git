@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -102,6 +103,46 @@ namespace APIHelper
         }
 
         #endregion 回傳字串版本
+
+        #region 特殊規格版本(呼叫某些老舊或嚴謹的API可以使用)
+
+        /// <summary>
+        /// Post MultipartForm 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="jsonObj"></param>
+        /// <returns></returns>
+        public T PostForm<T>(string url, object jsonObj)
+        {
+            HttpClient httpClient = new HttpClient();
+            var form = GenerateMultipartFormDataContent(jsonObj);
+            HttpResponseMessage response = httpClient.PostAsync(url, form).Result;
+            response.EnsureSuccessStatusCode();
+            //httpClient.Dispose();
+            string responseBody = response.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<T>(responseBody);
+        }
+
+        /// <summary>
+        /// 產生特規FormData
+        /// </summary>
+        /// <param name="jsonObj"></param>
+        private MultipartFormDataContent GenerateMultipartFormDataContent(object jsonObj)
+        {
+            //REF: https://dotblogs.com.tw/rainmaker/2016/08/16/093026
+            string quote = "\"";
+            MultipartFormDataContent form = new MultipartFormDataContent();
+            Type t = jsonObj.GetType();
+            PropertyInfo[] props = t.GetProperties();
+            foreach (var prop in props)
+            {
+                form.Add(new StringContent(prop.GetValue(jsonObj).ToString(), Encoding.UTF8), $"{quote}{prop.Name}{quote}");
+            }
+            return form;
+        }
+
+        #endregion 特殊規格版本(呼叫某些老舊或嚴謹的API可以使用)
 
         public string ObjectToJson(object data)
         {
