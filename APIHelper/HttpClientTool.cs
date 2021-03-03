@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -143,6 +144,46 @@ namespace APIHelper
         }
 
         #endregion 特殊規格版本(呼叫某些老舊或嚴謹的API可以使用)
+
+        #region API 帶cookie版本
+
+        /// <summary>
+        /// API呼叫Get 帶cookie版本特規版本
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="baseUrl"></param>
+        /// <param name="cookieDic"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public T GetHaveCookie<T>(string baseUrl, Dictionary<string, string> cookieDic, string url)
+        {
+            var cookieContainer = this.GenerateCookieContainer(baseUrl, cookieDic);
+            var handler = new HttpClientHandler() { CookieContainer = cookieContainer };
+            HttpClient client = new HttpClient(handler);
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
+            HttpResponseMessage response = client.GetAsync(url).Result;
+            response.EnsureSuccessStatusCode();
+            string responseBody = response.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<T>(responseBody);
+        }
+
+        /// <summary>
+        /// 產生CookieContainer
+        /// </summary>
+        /// <param name="baseUrl"></param>
+        /// <param name="cookieDic"></param>
+        /// <returns></returns>
+        private CookieContainer GenerateCookieContainer(string baseUrl, Dictionary<string, string> cookieDic)
+        {
+            var cookieContainer = new CookieContainer();
+            foreach (var item in cookieDic)
+            {
+                cookieContainer.Add(new Uri(baseUrl), new Cookie(item.Key, item.Value));
+            }
+            return cookieContainer;
+        }
+
+        #endregion API 帶cookie版本
 
         public string ObjectToJson(object data)
         {
