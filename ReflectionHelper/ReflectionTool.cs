@@ -37,5 +37,18 @@ namespace ReflectionHelper
             PropertyInfo pi = t.GetProperty(PropertyName);
             pi.SetValue(model, value);
         }
+
+        /// <summary>
+        /// 使用Reflection將Class轉Dictionary
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public IDictionary<string, object> GetClassToDictionary(object model)
+        {
+            Type t = model.GetType();
+            PropertyInfo[] piArr = t.GetProperties();
+            var dict = piArr.ToDictionary(x => x.Name, x => x.GetValue(model, null));
+            return dict;
+        }
     }
 }
