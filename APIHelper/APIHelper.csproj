@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HttpClientAsyncTool.cs" />
+    <Compile Include="HttpClientFormAsyncTool.cs" />
     <Compile Include="HttpClientFormTool.cs" />
     <Compile Include="HttpClientTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
