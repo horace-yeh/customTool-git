@@ -131,12 +131,12 @@ namespace XmlHelper
             return document;
         }
 
-        public XDocument SitemapIndexDocumentGenerate()
+        public XDocument SitemapIndexDocumentGenerate(IEnumerable<string> urls)
         {
             XNamespace xmlns = this.XNamespaceDict[XmlNamespaceEnum.Xmlns];
             XElement root = new XElement(xmlns + "sitemapindex");
 
-            foreach (var item in Enumerable.Range(1, 10))
+            foreach (var item in urls)
             {
                 XElement urlElement = new XElement(xmlns + "sitemap", new XElement(xmlns + "loc", Uri.EscapeUriString($"{item}")));
                 root.Add(urlElement);
