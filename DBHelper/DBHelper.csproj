@@ -46,8 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdoTool.cs" />
+    <Compile Include="ConnectionFactory.cs" />
     <Compile Include="DapperAsyncTool.cs" />
     <Compile Include="DapperDynamicAsyncTool.cs" />
+    <Compile Include="DapperIDbConnAsyncTool.cs" />
     <Compile Include="DapperTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
